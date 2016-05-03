@@ -3,13 +3,22 @@ angular.module("todoListApp", [])
 .controller('mainCtrl', function($scope, dataService){
 	
 	$scope.helloConsole= dataService.helloConsole;
+	
 	$scope.todos = dataService.getTodos(function(response){
 			console.log(response.data);
 			$scope.todos = response.data;
 			});
+			
+			
+	$scope.deleteTodo =  function(todo, $index){
 	
-	$scope.helloWorld = function() {
-	   console.log("Hello there! This the hello world controller function, in the mainCtrls!");	
+			dataService.deleteTodo(todo);
+			$scope.todos.splice($index, 1);
+	};
+	
+	$scope.saveTodo = function(todo){
+	
+			dataService.saveTodo(todo);
 	};
 	
 })
@@ -23,13 +32,19 @@ angular.module("todoListApp", [])
 		
 		this.getTodos= function(callback){
 			$http.get('mock/todos.json')
-		    .then(callback)
-		}
-		
-		this.deleteTodo = function(todo){
+		    .then(callback);
 		};
 		
-	  
+		this.deleteTodo = function(todo){
+			
+			console.log("The " + todo.name + " todo has been deleted!");
+			// other logic 
+		};
+		
+	   this.saveTodo = function(todo){
+		  
+		    console.log("The " + todo.name + " todo has been saved! ");  
+	    };
 
 	
 });
